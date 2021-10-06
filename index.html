@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- Latest compiled and minified CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+   <!--Icons-->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+   <!-- jQuery library -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+   <!-- Popper JS -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+   <!-- Latest compiled JavaScript -->
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+   <link rel="stylesheet" href="style.css">
+
+   <title>Planet of The Web</title>
+</head>
+<body>
+   <div class="container" id="app">
+
+      <nav class="navbar navbar-light fixed-top">
+         <div class="navbar-text ml-auto d-flex">
+            <button class="btn btn-sm btn-outline-success" @click="sliderStatus = !sliderStatus">
+               <i class="bi bi-currency-dollar"></i>
+            </button>
+            <div class="dropdown ml-2" v-if="cart.length > 0">
+               <button class="btn btn-success btn-sm dropdown-toggle" id="cartDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="badge badge-pill badge-light">{{cartQty}}</span>
+                  <i class="bi bi-cart3 mx-2"></i>
+                  {{cartTotal | currency}}
+               </button>
+               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="cartDropdown">
+                  <div v-for="(item, index) in cart" :key="index">
+                     <div class="dropdown-item-text text-nowrap text-right">
+                        <span class="badge badge-pill badge-warning align-text-top mr-1">{{item.qty}}</span>
+                        {{item.product.name}}
+                        <b>{{(item.qty * item.product.price) | currency}}</b>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </nav>
+
+      <h1>My Shop</h1>
+      <transition name="fade">
+         <div class="form-inline mr-auto" style="margin-top: 10vh;" v-if="sliderStatus">
+            <label for="formMax" class="font-weight-bold mr-2">max</label>
+            <input type="text" class="form-controle w-25" v-model="maximum">
+            <input type="range" class="custom-range" min="0" max="200" v-model="maximum">
+         </div>
+      </transition>  
+      
+      <transition-group name="fade" tag="div">
+         <div  class="row d-flex mb-3 align-items-center" 
+               v-for="(item, index) in products" :key="index"
+               v-if="item.price<=Number(maximum)">
+            <div class="col-1 m-auto">
+               <button class="btn btn-info" v-on:click="addItem(item)">+</button>
+            </div>
+            <div class="col-4">
+               <img class="img-fluid d-block" :src="item.image" :alt="item.name">
+            </div>
+            <div class="col">
+               <h3 class="text-info">{{item.name}}</h3>
+               <p class="mb-0">{{item.description}}</p>
+               <div class="h5 float-right">{{item.price | currency}}</div>
+            </div>
+         </div>
+      </transition-group>
+     
+   </div>
+
+   <script src="main.js"></script>
+</body>
+</html>
