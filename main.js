@@ -30,6 +30,14 @@ var app = new Vue({
       }else{
         this.cart.push({product: product, qty: 1})
       }
+    },
+
+    deleteItem(index){
+      if(this.cart[index].qty > 1){
+        this.cart[index].qty--
+      }else{
+        this.cart.splice(index, 1) //splice(à partir da posicao, qtd. de items que serão removidos)
+      }
     }
   },
   computed: {
