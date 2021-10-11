@@ -36,7 +36,7 @@
                <button class="btn btn-success btn-sm dropdown-toggle" id="cartDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="badge badge-pill badge-light">{{cartQty}}</span>
                   <i class="bi bi-cart3 mx-2"></i>
-                  {{cartTotal | currency}}
+                  <price :value="Number(cartTotal)"></price>
                </button>
                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="cartDropdown">
                   <div v-for="(item, index) in cart" :key="index">
@@ -60,24 +60,8 @@
             <input type="range" class="custom-range" min="0" max="200" v-model="maximum">
          </div>
       </transition>  
-      
-      <transition-group name="fade" tag="div">
-         <div  class="row d-flex mb-3 align-items-center" 
-               v-for="(item, index) in products" :key="index"
-               v-if="item.price<=Number(maximum)">
-            <div class="col-1 m-auto">
-               <button class="btn btn-info" v-on:click="addItem(item)">+</button>
-            </div>
-            <div class="col-4">
-               <img class="img-fluid d-block" :src="item.image" :alt="item.name">
-            </div>
-            <div class="col">
-               <h3 class="text-info">{{item.name}}</h3>
-               <p class="mb-0">{{item.description}}</p>
-               <div class="h5 float-right">{{item.price | currency}}</div>
-            </div>
-         </div>
-      </transition-group>
+
+      <product-list :products="products" :maximum="maximum" @add="addItem"></product-list>
      
    </div>
 
